@@ -2,6 +2,7 @@ package com.example.InternIntelligence_Portfolio_Api.controller;
 
 
 import com.example.InternIntelligence_Portfolio_Api.dto.ProjectDTO;
+import com.example.InternIntelligence_Portfolio_Api.exceptions.ProjectNotFoundException;
 import com.example.InternIntelligence_Portfolio_Api.service.ProjectService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,19 +33,19 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<ProjectDTO> addProject(@RequestBody ProjectDTO projectDTO){
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProjectDTO addProject(@RequestBody ProjectDTO projectDTO){
         ProjectDTO savedProjectDTO = projectservice.addProject(projectDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedProjectDTO);
+        return savedProjectDTO;
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProject(@PathVariable Long id){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProject(@PathVariable Long id){
         boolean isDeleted = projectservice.deleteProject(id);
 
-        if(isDeleted){
-            return ResponseEntity.noContent().build();
-        }else{
-            return ResponseEntity.notFound().build();
+        if(!isDeleted) {
+            throw new ProjectNotFoundException("Project not found");
         }
     }
 }
