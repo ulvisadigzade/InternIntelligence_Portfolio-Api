@@ -4,7 +4,10 @@ package com.example.InternIntelligence_Portfolio_Api.service;
 import com.example.InternIntelligence_Portfolio_Api.dto.ProjectDTO;
 import com.example.InternIntelligence_Portfolio_Api.model.Project;
 import com.example.InternIntelligence_Portfolio_Api.repository.ProjectRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -29,20 +32,19 @@ public class ProjectService {
     }
 
     public ProjectDTO getProject(Long id){
-        Optional<Project> projectOptional = projectrepository.findById(id);
-        Project project = projectOptional.get();
-        return new ProjectDTO(project.getId(), project.getName(),project.getDescription());
+        Project project = projectrepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found with id: " + id));
+        return convertToDTO(project);
     }
 
-    //converting model to dto object
     private ProjectDTO convertToDTO(Project project) {
         return new ProjectDTO(project.getId(), project.getName(), project.getDescription());
     }
 
     public ProjectDTO addProject(ProjectDTO projectDTO){
         Project project = new Project(projectDTO.getName(), projectDTO.getDescription());
-        projectrepository.save(project);
-        return new ProjectDTO(project.getId(),project.getName(),project.getDescription());
+        project = projectrepository.save(project);//save and get back
+        return convertToDTO(project);
     }
 
     public boolean deleteProject(Long id){
@@ -50,8 +52,6 @@ public class ProjectService {
             projectrepository.deleteById(id);
             return true;
         }
-        else{
-            return false;
-        }
+        return false;
     }
 }

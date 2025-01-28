@@ -5,10 +5,12 @@ import com.example.InternIntelligence_Portfolio_Api.dto.ProjectDTO;
 import com.example.InternIntelligence_Portfolio_Api.exceptions.ProjectNotFoundException;
 import com.example.InternIntelligence_Portfolio_Api.service.ProjectService;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -17,24 +19,26 @@ import java.util.List;
 public class ProjectController {
     private final ProjectService projectservice;
 
-    @Autowired
+
     public ProjectController(ProjectService projectservice){
         this.projectservice=projectservice;
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<ProjectDTO> getProjects(){
         return projectservice.getProjects();
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ProjectDTO getProject(@PathVariable Long id){
         return projectservice.getProject(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProjectDTO addProject(@RequestBody ProjectDTO projectDTO){
+    public ProjectDTO addProject(@RequestBody @Valid ProjectDTO projectDTO){
         ProjectDTO savedProjectDTO = projectservice.addProject(projectDTO);
         return savedProjectDTO;
     }
