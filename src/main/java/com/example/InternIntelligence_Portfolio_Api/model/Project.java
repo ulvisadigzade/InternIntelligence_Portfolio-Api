@@ -4,7 +4,6 @@ package com.example.InternIntelligence_Portfolio_Api.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="projects")
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
