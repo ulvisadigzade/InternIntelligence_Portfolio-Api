@@ -8,6 +8,7 @@ public class InternIntelligencePortfolioApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(InternIntelligencePortfolioApiApplication.class, args);
+
 	}
 
 }

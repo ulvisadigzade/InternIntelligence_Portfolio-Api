@@ -4,25 +4,19 @@ package com.example.InternIntelligence_Portfolio_Api.service;
 import com.example.InternIntelligence_Portfolio_Api.dto.ProjectDTO;
 import com.example.InternIntelligence_Portfolio_Api.model.Project;
 import com.example.InternIntelligence_Portfolio_Api.repository.ProjectRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ProjectService {
 
     private final ProjectRepository projectrepository;
 
-    public ProjectService(ProjectRepository projectrepository){
-        this.projectrepository=projectrepository;
-    }
 
     public List<ProjectDTO> getProjects(){
         List<Project> projects = projectrepository.findAll();
@@ -52,6 +46,18 @@ public class ProjectService {
             projectrepository.deleteById(id);
             return true;
         }
+        return false;
+    }
+
+    public boolean updateProject(Long id,ProjectDTO projectDTO){
+        if(projectrepository.existsById(id)){
+            Project project = projectrepository.findById(id).get();
+            project.setName(projectDTO.getName());
+            project.setDescription(project.getDescription());
+            projectrepository.save(project);
+            return true;
+        }
+        addProject(projectDTO);
         return false;
     }
 }

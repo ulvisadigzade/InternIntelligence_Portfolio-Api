@@ -6,23 +6,20 @@ import com.example.InternIntelligence_Portfolio_Api.exceptions.ProjectNotFoundEx
 import com.example.InternIntelligence_Portfolio_Api.service.ProjectService;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/projects")
+@AllArgsConstructor
 public class ProjectController {
     private final ProjectService projectservice;
 
 
-    public ProjectController(ProjectService projectservice){
-        this.projectservice=projectservice;
-    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -51,5 +48,14 @@ public class ProjectController {
         if(!isDeleted) {
             throw new ProjectNotFoundException("Project not found");
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateObject(@PathVariable Long id, @RequestBody ProjectDTO projectDTO){
+        boolean exists = projectservice.updateProject(id,projectDTO);
+        if(exists){
+            return ResponseEntity.ok("Updated successfully");
+        }
+        return ResponseEntity.ok("New project created");
     }
 }
