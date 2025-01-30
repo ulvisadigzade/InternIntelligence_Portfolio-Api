@@ -53,7 +53,7 @@ public class ProjectService {
         if(projectrepository.existsById(id)){
             Project project = projectrepository.findById(id).get();
             project.setName(projectDTO.getName());
-            project.setDescription(project.getDescription());
+            project.setDescription(projectDTO.getDescription());
             projectrepository.save(project);
             return true;
         }

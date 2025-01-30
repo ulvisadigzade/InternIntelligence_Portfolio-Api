@@ -22,13 +22,11 @@ public class ProjectController {
 
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     public List<ProjectDTO> getProjects(){
         return projectservice.getProjects();
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public ProjectDTO getProject(@PathVariable Long id){
         return projectservice.getProject(id);
     }
