@@ -5,10 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,5 +20,5 @@ public class Project {
         this.name = name;
         this.description = description;
     }
-
 }
+

@@ -11,15 +11,16 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Skill {
-
+public class Achievement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
+    private String description;
 
-    public Skill(String name){
-        this.name=name;
+    public Achievement(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 }
