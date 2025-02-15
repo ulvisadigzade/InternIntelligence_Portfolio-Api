@@ -39,6 +39,7 @@ public class UserService {
         if(!authentication.isAuthenticated()){
             throw new BadCredentialsException("Invalid credentials");
         }
+
         return jwtService.generateToken(loginRequest.getEmail());
     }
 

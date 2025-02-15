@@ -4,48 +4,57 @@ import com.example.InternIntelligence_Portfolio_Api.dto.ProjectRequestDTO;
 import com.example.InternIntelligence_Portfolio_Api.dto.ProjectResponseDTO;
 import com.example.InternIntelligence_Portfolio_Api.service.ProjectService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping("/projects")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ProjectController {
     private final ProjectService projectService;
 
     @GetMapping
-    public ResponseEntity<List<ProjectResponseDTO>> getProjects(){
-        List<ProjectResponseDTO> projects = projectService.getProjects();
-        return ResponseEntity.ok().body(projects);
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProjectResponseDTO> getProjects(){
+        return projectService.getProjects();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectResponseDTO> getProject(@PathVariable Long id){
-        ProjectResponseDTO project = projectService.getProject(id);
-        return ResponseEntity.ok().body(project);
+    @ResponseStatus(HttpStatus.OK)
+    public ProjectResponseDTO getProject(@PathVariable Long id){
+        return projectService.getProject(id);
     }
 
     @PostMapping
-    public ResponseEntity<ProjectResponseDTO> addProject(@RequestBody @Valid ProjectRequestDTO projectRequestDTO){
+    @ResponseStatus(HttpStatus.OK)
+    public URI addProject(@RequestBody @Valid ProjectRequestDTO projectRequestDTO){
         ProjectResponseDTO project = projectService.addProject(projectRequestDTO);
-        return ResponseEntity.created(URI.create("/projects/" + project.getId())).body(project);
+        return URI.create("/projects/" + project.getId());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProjectResponseDTO> updateProject(@PathVariable Long id, @RequestBody ProjectRequestDTO projectRequestDTO){
+    @ResponseStatus(HttpStatus.OK)
+    public URI updateProject(@PathVariable Long id, @RequestBody ProjectRequestDTO projectRequestDTO){
         ProjectResponseDTO project = projectService.updateProject(id, projectRequestDTO);
-        return ResponseEntity.ok().body(project);
+        return URI.create("/projects/" + project.getId());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProject(@PathVariable Long id){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProject(@PathVariable Long id){
         projectService.deleteProject(id);
-        return ResponseEntity.noContent().build();
     }
-
-
 }

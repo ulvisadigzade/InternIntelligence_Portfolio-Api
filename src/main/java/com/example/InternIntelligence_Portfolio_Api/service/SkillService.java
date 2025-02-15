@@ -54,7 +54,7 @@ public class SkillService {
         return convertToResponseDTO(skill);
     }
 
-    public SkillResponseDTO updateSkill(Long id,SkillRequestDTO skillRequestDTO){
+    public Skill updateSkill(Long id, SkillRequestDTO skillRequestDTO){
         Skill skill = skillrepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Skill with id:" + id + " not found"));
 
@@ -67,7 +67,7 @@ public class SkillService {
 
         skill.setName(skillRequestDTO.getName());
         skill = skillrepository.save(skill);
-        return convertToResponseDTO(skill);
+        return skill;
     }
 
     public void deleteSkill(Long id){

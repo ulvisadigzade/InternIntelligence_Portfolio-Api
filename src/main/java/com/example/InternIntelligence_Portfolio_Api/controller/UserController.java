@@ -6,9 +6,10 @@ import com.example.InternIntelligence_Portfolio_Api.model.User;
 import com.example.InternIntelligence_Portfolio_Api.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,15 +18,15 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody @Valid User user){
+    @ResponseStatus(HttpStatus.CREATED)
+    public void register(@RequestBody @Valid User user){
         userService.saveUser(user);
-        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid LoginRequest loginRequest){
-        String token = userService.login(loginRequest);
-        return ResponseEntity.ok().body(token);
+    public String login(@RequestBody @Valid LoginRequest loginRequest){
+
+        return userService.login(loginRequest);
     }
 
 }
