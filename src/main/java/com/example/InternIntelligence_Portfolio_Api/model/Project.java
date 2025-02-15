@@ -8,9 +8,10 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="projects")
 public class Project {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy  = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -20,5 +21,10 @@ public class Project {
         this.name = name;
         this.description = description;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }
 

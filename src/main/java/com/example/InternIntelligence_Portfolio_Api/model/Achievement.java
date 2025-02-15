@@ -1,16 +1,14 @@
 package com.example.InternIntelligence_Portfolio_Api.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="achievements")
 public class Achievement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +21,8 @@ public class Achievement {
         this.name = name;
         this.description = description;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
