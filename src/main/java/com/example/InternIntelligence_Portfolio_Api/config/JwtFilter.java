@@ -30,7 +30,8 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = null;
         String email = null;
 
-        if(authHeader==null && !authHeader.startsWith("Bearer ")){
+        if(authHeader==null || !authHeader.startsWith("Bearer ")){
+            filterChain.doFilter(request,response);
             return;
         }
         token = authHeader.substring(7);
@@ -41,6 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         if(SecurityContextHolder.getContext().getAuthentication()!=null){
             filterChain.doFilter(request,response);
+            return;
         }
 
         UserDetails userDetails = context.getBean(UserDetailsServiceImpl.class).loadUserByUsername(email);
